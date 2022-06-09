@@ -10,7 +10,7 @@ $(".start-btn").click(function() {
   if (!started) {
 
     $(".start-btn").fadeToggle();
-    setTimeout(function () {
+    setTimeout(function() {
       nextSequence();
     }, 1000);
 
@@ -52,7 +52,7 @@ function checkAnswer(currentLevel) {
 }
 
 
-//show the user the next button he needs to press
+//produce the next button in the pattern
 function nextSequence() {
   userClickedPattern = []; // user pattern restarted
   level++;
@@ -60,11 +60,27 @@ function nextSequence() {
   var randomNumber = Math.floor(Math.random() * 4);
   var randomChosenColour = buttonColours[randomNumber];
   gamePattern.push(randomChosenColour);
-  $("#" + randomChosenColour).fadeIn(100).fadeOut(100).fadeIn(100); //flash
-  playSound(randomChosenColour);
+  playPattern();
 
 
 }
+
+
+
+
+//show the pattern to the user
+function playPattern() {
+  var i = 0;
+  const intervalId = setInterval(function() {
+    $("#"+gamePattern[i]).fadeIn(100).fadeOut(100).fadeIn(100);
+    playSound(gamePattern[i]);
+    i ++;
+    if (i === gamePattern.length) {//if we got to the end of the array stop the iterval
+        clearInterval(intervalId);
+      }
+    }, 1000);
+}
+
 
 
 //plays sounds of the buttons
@@ -87,6 +103,6 @@ function startOver() {
   level = 0;
   started = false;
   gamePattern = [];
-  $(".start-btn").text("Start Over").fadeToggle();
+  $(".start-btn").text("Restart").fadeToggle();
 
 }
